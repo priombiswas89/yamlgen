@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"><?define YamlGenerator_TargetDir=$(var.YamlGenerator.TargetDir)?>
+	<Product Id="112f586f-34e4-4ab1-a8ab-4864edda8b32" Name="YAML Generator" Language="1033" Version="1.0.0.0" Manufacturer="Priom Biswas" UpgradeCode="951733aa-a9e9-4893-8b69-33e3974f7b32">
+		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+
+    <WixVariable Id="WixUILicenseRtf" Value="$(var.ProjectDir)\license.rtf" />
+    <UIRef Id="WixUI_Minimal" />
+    
+		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+		<MediaTemplate />
+
+		<Feature Id="ProductFeature" Title="YAML Generator" Level="1">
+			<ComponentGroupRef Id="ProductComponents" />
+		</Feature>
+	</Product>
+
+	<Fragment>
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="ProgramFilesFolder">
+				<Directory Id="INSTALLFOLDER" Name="YAML Generator" />
+			</Directory>
+		</Directory>
+	</Fragment>
+
+	<Fragment>
+		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+			<Component Id="YamlGenerator.dll" Guid="d762ee68-1520-4f7b-87b3-8de1e0c04d2d">
+        <Class Id="{17635ADB-CC45-3DA4-B423-B6F089180810}" Context="InprocServer32" Description="YamlGenerator.Transition" ThreadingModel="both" ForeignServer="mscoree.dll">
+          <ProgId Id="YamlGenerator.Transition" Description="YamlGenerator.Transition" />
+        </Class>
+        <Class Id="{185080F0-0E08-3E7B-A627-5AA4ADA5B43E}" Context="InprocServer32" Description="YamlGenerator.Operation" ThreadingModel="both" ForeignServer="mscoree.dll">
+          <ProgId Id="YamlGenerator.Operation" Description="YamlGenerator.Operation" />
+        </Class>
+        <Class Id="{55E30396-A8E5-379B-8589-632104A1B282}" Context="InprocServer32" Description="YamlGenerator.DiagramElements" ThreadingModel="both" ForeignServer="mscoree.dll">
+          <ProgId Id="YamlGenerator.DiagramElements" Description="YamlGenerator.DiagramElements" />
+        </Class>
+        <Class Id="{7F37F7C0-A25C-3C8D-9969-99FD1BF34BBE}" Context="InprocServer32" Description="YamlGenerator.State" ThreadingModel="both" ForeignServer="mscoree.dll">
+          <ProgId Id="YamlGenerator.State" Description="YamlGenerator.State" />
+        </Class>
+        <Class Id="{DAF8346B-CC96-35B2-A47D-421A2BC9486D}" Context="InprocServer32" Description="YamlGenerator.YamlGeneratorMain" ThreadingModel="both" ForeignServer="mscoree.dll">
+          <ProgId Id="YamlGenerator.YamlGeneratorMain" Description="YamlGenerator.YamlGeneratorMain" />
+        </Class>
+        <File Id="fil735EAE4A5569D4CB62663B1631683E63" KeyPath="yes" Name="YamlGenerator.dll" Source="$(var.YamlGenerator_TargetDir)YamlGenerator.dll" />
+        <RegistryValue Root="HKCR" Key="CLSID\{17635ADB-CC45-3DA4-B423-B6F089180810}\Implemented Categories\{62C8FE65-4EBB-45e7-B440-6E39B2CDBF29}" Value="" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{17635ADB-CC45-3DA4-B423-B6F089180810}\InprocServer32\1.0.0.0" Name="Class" Value="YamlGenerator.Transition" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{17635ADB-CC45-3DA4-B423-B6F089180810}\InprocServer32\1.0.0.0" Name="Assembly" Value="YamlGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{17635ADB-CC45-3DA4-B423-B6F089180810}\InprocServer32\1.0.0.0" Name="RuntimeVersion" Value="v4.0.30319" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{17635ADB-CC45-3DA4-B423-B6F089180810}\InprocServer32\1.0.0.0" Name="CodeBase" Value="file:///[#fil735EAE4A5569D4CB62663B1631683E63]" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{17635ADB-CC45-3DA4-B423-B6F089180810}\InprocServer32" Name="Class" Value="YamlGenerator.Transition" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{17635ADB-CC45-3DA4-B423-B6F089180810}\InprocServer32" Name="Assembly" Value="YamlGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{17635ADB-CC45-3DA4-B423-B6F089180810}\InprocServer32" Name="RuntimeVersion" Value="v4.0.30319" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{17635ADB-CC45-3DA4-B423-B6F089180810}\InprocServer32" Name="CodeBase" Value="file:///[#fil735EAE4A5569D4CB62663B1631683E63]" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{185080F0-0E08-3E7B-A627-5AA4ADA5B43E}\Implemented Categories\{62C8FE65-4EBB-45e7-B440-6E39B2CDBF29}" Value="" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{185080F0-0E08-3E7B-A627-5AA4ADA5B43E}\InprocServer32\1.0.0.0" Name="Class" Value="YamlGenerator.Operation" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{185080F0-0E08-3E7B-A627-5AA4ADA5B43E}\InprocServer32\1.0.0.0" Name="Assembly" Value="YamlGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{185080F0-0E08-3E7B-A627-5AA4ADA5B43E}\InprocServer32\1.0.0.0" Name="RuntimeVersion" Value="v4.0.30319" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{185080F0-0E08-3E7B-A627-5AA4ADA5B43E}\InprocServer32\1.0.0.0" Name="CodeBase" Value="file:///[#fil735EAE4A5569D4CB62663B1631683E63]" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{185080F0-0E08-3E7B-A627-5AA4ADA5B43E}\InprocServer32" Name="Class" Value="YamlGenerator.Operation" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{185080F0-0E08-3E7B-A627-5AA4ADA5B43E}\InprocServer32" Name="Assembly" Value="YamlGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{185080F0-0E08-3E7B-A627-5AA4ADA5B43E}\InprocServer32" Name="RuntimeVersion" Value="v4.0.30319" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{185080F0-0E08-3E7B-A627-5AA4ADA5B43E}\InprocServer32" Name="CodeBase" Value="file:///[#fil735EAE4A5569D4CB62663B1631683E63]" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{55E30396-A8E5-379B-8589-632104A1B282}\Implemented Categories\{62C8FE65-4EBB-45e7-B440-6E39B2CDBF29}" Value="" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{55E30396-A8E5-379B-8589-632104A1B282}\InprocServer32\1.0.0.0" Name="Class" Value="YamlGenerator.DiagramElements" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{55E30396-A8E5-379B-8589-632104A1B282}\InprocServer32\1.0.0.0" Name="Assembly" Value="YamlGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{55E30396-A8E5-379B-8589-632104A1B282}\InprocServer32\1.0.0.0" Name="RuntimeVersion" Value="v4.0.30319" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{55E30396-A8E5-379B-8589-632104A1B282}\InprocServer32\1.0.0.0" Name="CodeBase" Value="file:///[#fil735EAE4A5569D4CB62663B1631683E63]" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{55E30396-A8E5-379B-8589-632104A1B282}\InprocServer32" Name="Class" Value="YamlGenerator.DiagramElements" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{55E30396-A8E5-379B-8589-632104A1B282}\InprocServer32" Name="Assembly" Value="YamlGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{55E30396-A8E5-379B-8589-632104A1B282}\InprocServer32" Name="RuntimeVersion" Value="v4.0.30319" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{55E30396-A8E5-379B-8589-632104A1B282}\InprocServer32" Name="CodeBase" Value="file:///[#fil735EAE4A5569D4CB62663B1631683E63]" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{7F37F7C0-A25C-3C8D-9969-99FD1BF34BBE}\Implemented Categories\{62C8FE65-4EBB-45e7-B440-6E39B2CDBF29}" Value="" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{7F37F7C0-A25C-3C8D-9969-99FD1BF34BBE}\InprocServer32\1.0.0.0" Name="Class" Value="YamlGenerator.State" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{7F37F7C0-A25C-3C8D-9969-99FD1BF34BBE}\InprocServer32\1.0.0.0" Name="Assembly" Value="YamlGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{7F37F7C0-A25C-3C8D-9969-99FD1BF34BBE}\InprocServer32\1.0.0.0" Name="RuntimeVersion" Value="v4.0.30319" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{7F37F7C0-A25C-3C8D-9969-99FD1BF34BBE}\InprocServer32\1.0.0.0" Name="CodeBase" Value="file:///[#fil735EAE4A5569D4CB62663B1631683E63]" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{7F37F7C0-A25C-3C8D-9969-99FD1BF34BBE}\InprocServer32" Name="Class" Value="YamlGenerator.State" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{7F37F7C0-A25C-3C8D-9969-99FD1BF34BBE}\InprocServer32" Name="Assembly" Value="YamlGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{7F37F7C0-A25C-3C8D-9969-99FD1BF34BBE}\InprocServer32" Name="RuntimeVersion" Value="v4.0.30319" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{7F37F7C0-A25C-3C8D-9969-99FD1BF34BBE}\InprocServer32" Name="CodeBase" Value="file:///[#fil735EAE4A5569D4CB62663B1631683E63]" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{DAF8346B-CC96-35B2-A47D-421A2BC9486D}\Implemented Categories\{62C8FE65-4EBB-45e7-B440-6E39B2CDBF29}" Value="" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{DAF8346B-CC96-35B2-A47D-421A2BC9486D}\InprocServer32\1.0.0.0" Name="Class" Value="YamlGenerator.YamlGeneratorMain" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{DAF8346B-CC96-35B2-A47D-421A2BC9486D}\InprocServer32\1.0.0.0" Name="Assembly" Value="YamlGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{DAF8346B-CC96-35B2-A47D-421A2BC9486D}\InprocServer32\1.0.0.0" Name="RuntimeVersion" Value="v4.0.30319" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{DAF8346B-CC96-35B2-A47D-421A2BC9486D}\InprocServer32\1.0.0.0" Name="CodeBase" Value="file:///[#fil735EAE4A5569D4CB62663B1631683E63]" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{DAF8346B-CC96-35B2-A47D-421A2BC9486D}\InprocServer32" Name="Class" Value="YamlGenerator.YamlGeneratorMain" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{DAF8346B-CC96-35B2-A47D-421A2BC9486D}\InprocServer32" Name="Assembly" Value="YamlGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{DAF8346B-CC96-35B2-A47D-421A2BC9486D}\InprocServer32" Name="RuntimeVersion" Value="v4.0.30319" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{DAF8346B-CC96-35B2-A47D-421A2BC9486D}\InprocServer32" Name="CodeBase" Value="file:///[#fil735EAE4A5569D4CB62663B1631683E63]" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Record\{5E1E504C-95C7-4B14-A0F6-70329F70084A}\1.0.0.0" Name="Class" Value="EA.ObjectType" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Record\{5E1E504C-95C7-4B14-A0F6-70329F70084A}\1.0.0.0" Name="Assembly" Value="YamlGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Record\{5E1E504C-95C7-4B14-A0F6-70329F70084A}\1.0.0.0" Name="RuntimeVersion" Value="v4.0.30319" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Record\{5E1E504C-95C7-4B14-A0F6-70329F70084A}\1.0.0.0" Name="CodeBase" Value="file:///[#fil735EAE4A5569D4CB62663B1631683E63]" Type="string" Action="write" />
+			</Component>
+			<Component Id="YamlDotNet.dll" Guid="fb1dc0aa-e824-4ace-9549-ae6d96618c96">
+			  <File Id="YamlDotNet.dll" Name="YamlDotNet.dll" Source="$(var.YamlGenerator_TargetDir)YamlDotNet.dll" />
+			</Component>
+      <Component Id="YamlGeneratorRegEntries" Guid="ec2209e7-a65b-4bf1-86f2-a396e632d09c">
+        <RegistryKey Root="HKCU" Key="Software\Sparx Systems\EAAddins\YamlGenerator" Action="createAndRemoveOnUninstall">
+          <RegistryValue Type="string" Value="YamlGenerator.YamlGeneratorMain" />
+        </RegistryKey>
+      </Component>
+			<Component Id="YamlGenerator.pdb" Guid="e8e3d5fb-db72-49c9-a485-ef6661cf6514">
+			  <File Id="YamlGenerator.pdb" Name="YamlGenerator.pdb" Source="$(var.YamlGenerator_TargetDir)YamlGenerator.pdb" />
+			</Component>
+		</ComponentGroup>
+	</Fragment>
+</Wix>
