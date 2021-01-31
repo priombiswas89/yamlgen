@@ -8,10 +8,11 @@ namespace YamlGenerator
 {
     public class YamlGeneratorMain
     {
+        string stateName;
         string effectsList;
         string yamlData;
         string outputYamlString;
-        
+
         public object EA_GetMenuItems(EA.Repository repository, string location, string menuName)
         {
             if (menuName == "")
@@ -40,10 +41,10 @@ namespace YamlGenerator
                         {
                             char[] charsToReplaceFromDiagramId = new char[] { '{', '}' };
                             diag = rep.GetContextObject();
-                            
+
                             diagramElementsObj.refDiagramName = diag.Name;
                             diagramElementsObj.refDiagramId = diag.DiagramGUID.Trim(charsToReplaceFromDiagramId);
-                            
+
                             diagramElementsObj.states = new List<State>();
                             diagramElementsObj.transitions = new HashSet<Transition>();
 
@@ -51,26 +52,27 @@ namespace YamlGenerator
                             {
                                 int elementId = diagramObj.ElementID;
                                 EA.Element element = rep.GetElementByID(elementId);
-                                
+
                                 State stateObj = new State();
 
                                 if (element.MetaType == "Pseudostate")
                                 {
                                     diagramElementsObj.initialState = element.Name;
                                 }
-                                else if(element.MetaType == "FinalState")
+                                else if (element.MetaType == "FinalState")
                                 {
                                     diagramElementsObj.finalState = element.Name;
                                 }
-                                else 
+                                else
                                 {
                                     if (element.MetaType == "State")
                                     {
-                                        stateObj.name = Utilities.FormatElementName(element.FQName);
+                                        GetStateName(element.Name, rep, element);
+                                        stateObj.name = stateName;
                                         diagramElementsObj.states.Add(stateObj);
-                                    }    
+                                    }
                                 }
-                                
+
                                 if (element.Methods.Count > 0)
                                 {
                                     GetActionsByState(element, stateObj);
@@ -95,7 +97,19 @@ namespace YamlGenerator
                 MessageBox.Show("Yaml Generator - Version 1.0");
             }
         }
-
+        public void GetStateName(string result, EA.Repository rep, EA.Element element)
+        {
+            if (element.ParentID == 0)
+            {
+                stateName = result;
+                return;
+            }
+            else
+            {
+                EA.Element parent = rep.GetElementByID(element.ParentID);
+                GetStateName(parent.Name + "/" + result, rep, parent);
+            }
+        }
         private static void GetActionsByState(EA.Element element, State stateObj)
         {
             StringBuilder entryAc = new StringBuilder();
@@ -139,7 +153,7 @@ namespace YamlGenerator
                 }
             }
         }
-        private void GetAllTransitions(EA.Repository Rep, DiagramElement diagramElementsObj, EA.Element element)
+        private void GetAllTransitions(EA.Repository rep, DiagramElement diagramElementsObj, EA.Element element)
         {
             foreach (EA.Connector item in element.Connectors)
             {
@@ -148,12 +162,14 @@ namespace YamlGenerator
                 int supplierId = item.SupplierID;
                 char[] charsToReplaceFromEffects = new char[] { ';', '\r', '\t', '\n' };
 
-                EA.Element clientElement = Rep.GetElementByID(clientId);
-                EA.Element supplierElement = Rep.GetElementByID(supplierId);
+                EA.Element clientElement = rep.GetElementByID(clientId);
+                EA.Element supplierElement = rep.GetElementByID(supplierId);
 
                 Transition transitionObj = new Transition();
-                transitionObj.from = Utilities.FormatElementName(clientElement.FQName);
-                transitionObj.to = Utilities.FormatElementName(supplierElement.FQName);
+                GetStateName(clientElement.Name, rep, clientElement);
+                transitionObj.from = stateName;
+                GetStateName(supplierElement.Name, rep, supplierElement);
+                transitionObj.to = stateName;
                 transitionObj.trigger = item.TransitionEvent;
 
                 effectsList = item.TransitionAction;
