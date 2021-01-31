@@ -11,9 +11,7 @@ namespace YamlGenerator
         string effectsList;
         string yamlData;
         string outputYamlString;
-        char[] charsToReplaceFromDiagramId = new char[] { '{', '}' };
-        char[] charsToReplaceFromEffects = new char[] { ';', '\r', '\t', '\n' };       
-      
+        
         public object EA_GetMenuItems(EA.Repository repository, string location, string menuName)
         {
             if (menuName == "")
@@ -40,8 +38,9 @@ namespace YamlGenerator
                         }
                     case EA.ObjectType.otDiagram:
                         {
+                            char[] charsToReplaceFromDiagramId = new char[] { '{', '}' };
                             diag = rep.GetContextObject();
-
+                            
                             diagramElementsObj.refDiagramName = diag.Name;
                             diagramElementsObj.refDiagramId = diag.DiagramGUID.Trim(charsToReplaceFromDiagramId);
                             
@@ -50,10 +49,9 @@ namespace YamlGenerator
 
                             foreach (EA.DiagramObject diagramObj in diag.DiagramObjects)
                             {
-                                int diagramId = diagramObj.DiagramID;
                                 int elementId = diagramObj.ElementID;
                                 EA.Element element = rep.GetElementByID(elementId);
-
+                                
                                 State stateObj = new State();
 
                                 if (element.MetaType == "Pseudostate")
@@ -148,6 +146,8 @@ namespace YamlGenerator
                 bool isOld = false;
                 int clientId = item.ClientID;
                 int supplierId = item.SupplierID;
+                char[] charsToReplaceFromEffects = new char[] { ';', '\r', '\t', '\n' };
+
                 EA.Element clientElement = Rep.GetElementByID(clientId);
                 EA.Element supplierElement = Rep.GetElementByID(supplierId);
 
