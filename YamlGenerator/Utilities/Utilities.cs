@@ -18,7 +18,6 @@ namespace YamlGenerator
         public static string FormatElementName(string input)
         {
             string result = input.Substring(input.IndexOf(".") + 1).Trim();
-            result = result.Substring(result.IndexOf(".") + 1).Trim();
             result = result.Replace(".", "/");
             return result;
         }

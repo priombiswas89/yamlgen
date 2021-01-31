@@ -4,7 +4,8 @@
 		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
     <WixVariable Id="WixUILicenseRtf" Value="$(var.ProjectDir)\license.rtf" />
-    <UIRef Id="WixUI_Minimal" />
+    <Property Id="WIXUI_INSTALLDIR" Value="YAMLGENPRODUCTDIR" />
+    <UIRef Id="WixUI_InstallDir" />
     
 		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
 		<MediaTemplate />
@@ -17,7 +18,9 @@
 	<Fragment>
 		<Directory Id="TARGETDIR" Name="SourceDir">
 			<Directory Id="ProgramFilesFolder">
-				<Directory Id="INSTALLFOLDER" Name="YAML Generator" />
+        <Directory Id="YAMLGENPRODUCTDIR" Name="YAML Generator">
+          <Directory Id="INSTALLFOLDER" Name="YAML Generator" />
+        </Directory>
 			</Directory>
 		</Directory>
 	</Fragment>
@@ -31,7 +34,7 @@
         <Class Id="{185080F0-0E08-3E7B-A627-5AA4ADA5B43E}" Context="InprocServer32" Description="YamlGenerator.Operation" ThreadingModel="both" ForeignServer="mscoree.dll">
           <ProgId Id="YamlGenerator.Operation" Description="YamlGenerator.Operation" />
         </Class>
-        <Class Id="{55E30396-A8E5-379B-8589-632104A1B282}" Context="InprocServer32" Description="YamlGenerator.DiagramElements" ThreadingModel="both" ForeignServer="mscoree.dll">
+        <Class Id="{55E30396-A8E5-379B-8589-632104A1B282}" Context="InprocServer32" Description="YamlGenerator.DiagramElement" ThreadingModel="both" ForeignServer="mscoree.dll">
           <ProgId Id="YamlGenerator.DiagramElements" Description="YamlGenerator.DiagramElements" />
         </Class>
         <Class Id="{7F37F7C0-A25C-3C8D-9969-99FD1BF34BBE}" Context="InprocServer32" Description="YamlGenerator.State" ThreadingModel="both" ForeignServer="mscoree.dll">
