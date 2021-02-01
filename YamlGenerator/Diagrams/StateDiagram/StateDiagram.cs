@@ -2,7 +2,7 @@
 
 namespace YamlGenerator
 {
-    public class DiagramElement
+    public class StateDiagram
     {
         public string refDiagramName { get; set; }
         public string refDiagramId { get; set; }

@@ -10,8 +10,6 @@ namespace YamlGenerator
     {
         string stateName;
         string effectsList;
-        string yamlData;
-        string outputYamlString;
 
         public object EA_GetMenuItems(EA.Repository repository, string location, string menuName)
         {
@@ -28,8 +26,6 @@ namespace YamlGenerator
             if (itemName == "Save diagram as YAML")
             {
                 EA.Diagram diag;
-                DiagramElement diagramElementsObj = new DiagramElement();
-
                 switch (rep.GetContextItemType())
                 {
                     case EA.ObjectType.otPackage:
@@ -39,50 +35,16 @@ namespace YamlGenerator
                         }
                     case EA.ObjectType.otDiagram:
                         {
-                            char[] charsToReplaceFromDiagramId = new char[] { '{', '}' };
                             diag = rep.GetContextObject();
-
-                            diagramElementsObj.refDiagramName = diag.Name;
-                            diagramElementsObj.refDiagramId = diag.DiagramGUID.Trim(charsToReplaceFromDiagramId);
-
-                            diagramElementsObj.states = new List<State>();
-                            diagramElementsObj.transitions = new HashSet<Transition>();
-
-                            foreach (EA.DiagramObject diagramObj in diag.DiagramObjects)
+                            
+                            if (diag.Type.Equals("Statechart"))
                             {
-                                int elementId = diagramObj.ElementID;
-                                EA.Element element = rep.GetElementByID(elementId);
-
-                                State stateObj = new State();
-
-                                if (element.MetaType == "Pseudostate")
-                                {
-                                    diagramElementsObj.initialState = element.Name;
-                                }
-                                else if (element.MetaType == "FinalState")
-                                {
-                                    diagramElementsObj.finalState = element.Name;
-                                }
-                                else
-                                {
-                                    if (element.MetaType == "State")
-                                    {
-                                        GetStateName(element.Name, rep, element);
-                                        stateObj.name = stateName;
-                                        diagramElementsObj.states.Add(stateObj);
-                                    }
-                                }
-
-                                if (element.Methods.Count > 0)
-                                {
-                                    GetActionsByState(element, stateObj);
-                                }
-                                GetAllTransitions(rep, diagramElementsObj, element);
+                                StateDiagram stateDiagram = new StateDiagram();
+                                CreateObjectForStateDiagram(rep, diag, stateDiagram);
+                                Utilities.SerializeAsYaml(stateDiagram);
+                                Utilities.SaveAsYaml(stateDiagram);
                             }
-
-                            SerializeAsYaml(diagramElementsObj);
-                            SaveAsYaml(diagramElementsObj);
-
+                           
                             break;
                         }
                     case EA.ObjectType.otElement:
@@ -95,6 +57,48 @@ namespace YamlGenerator
             else if (itemName == "About")
             {
                 MessageBox.Show("Yaml Generator - Version 1.0");
+            }
+        }
+
+        private void CreateObjectForStateDiagram(EA.Repository rep, EA.Diagram diag, StateDiagram diagramElementsObj)
+        {
+            char[] charsToReplaceFromDiagramId = new char[] { '{', '}' };
+            diagramElementsObj.refDiagramName = diag.Name;
+            diagramElementsObj.refDiagramId = diag.DiagramGUID.Trim(charsToReplaceFromDiagramId);
+
+            diagramElementsObj.states = new List<State>();
+            diagramElementsObj.transitions = new HashSet<Transition>();
+
+            foreach (EA.DiagramObject diagramObj in diag.DiagramObjects)
+            {
+                int elementId = diagramObj.ElementID;
+                EA.Element element = rep.GetElementByID(elementId);
+
+                State stateObj = new State();
+
+                if (element.MetaType == "Pseudostate")
+                {
+                    diagramElementsObj.initialState = element.Name;
+                }
+                else if (element.MetaType == "FinalState")
+                {
+                    diagramElementsObj.finalState = element.Name;
+                }
+                else
+                {
+                    if (element.MetaType == "State")
+                    {
+                        GetStateName(element.Name, rep, element);
+                        stateObj.name = stateName;
+                        diagramElementsObj.states.Add(stateObj);
+                    }
+                }
+
+                if (element.Methods.Count > 0)
+                {
+                    GetActionsByState(element, stateObj);
+                }
+                GetAllTransitions(rep, diagramElementsObj, element);
             }
         }
         public void GetStateName(string result, EA.Repository rep, EA.Element element)
@@ -153,7 +157,7 @@ namespace YamlGenerator
                 }
             }
         }
-        private void GetAllTransitions(EA.Repository rep, DiagramElement diagramElementsObj, EA.Element element)
+        private void GetAllTransitions(EA.Repository rep, StateDiagram diagramElementsObj, EA.Element element)
         {
             foreach (EA.Connector item in element.Connectors)
             {
@@ -199,32 +203,7 @@ namespace YamlGenerator
 
             }
         }
-        private void SerializeAsYaml(DiagramElement diagramElementsObj)
-        {
-            var serializer = new YamlDotNet.Serialization.SerializerBuilder()
-                            .WithEmissionPhaseObjectGraphVisitor(args => new YamlIEnumerableSkipEmptyObjectGraphVisitor(args.InnerVisitor))
-                            .Build();
-
-            using (var writer = new StringWriter())
-            {
-                serializer.Serialize(writer, diagramElementsObj);
-                yamlData = writer.ToString();
-                outputYamlString = yamlData.Replace("'", string.Empty);
-            }
-        }
-        private void SaveAsYaml(DiagramElement diagramElementsObj)
-        {
-            SaveFileDialog savefile = new SaveFileDialog();
-            savefile.FileName = diagramElementsObj.refDiagramName;
-            savefile.Filter = "YAML files (*.yaml)|*.yaml|All files (*.*)|*.*";
-
-            if (savefile.ShowDialog() == DialogResult.OK)
-            {
-                using (StreamWriter sw = new StreamWriter(savefile.FileName))
-                    sw.WriteLine(outputYamlString);
-            }
-        }
-
+        
         public void EA_Disconnect()
         {
             GC.Collect();
