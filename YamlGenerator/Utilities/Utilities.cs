@@ -16,7 +16,7 @@ namespace YamlGenerator
         {
             return Regex.Replace(input, @",+", ",");
         }
-        public static void SerializeAsYaml(StateDiagram diagramElementsObj)
+        public static void SerializeAsYaml(object obj)
         {
             string yamlData;
             var serializer = new YamlDotNet.Serialization.SerializerBuilder()
@@ -25,15 +25,15 @@ namespace YamlGenerator
 
             using (var writer = new StringWriter())
             {
-                serializer.Serialize(writer, diagramElementsObj);
+                serializer.Serialize(writer, obj);
                 yamlData = writer.ToString();
                 outputYamlString = yamlData.Replace("'", string.Empty);
             }
         }
-        public static void SaveAsYaml(StateDiagram diagramElementsObj)
+        public static void SaveAsYaml(string fileName)
         {
             SaveFileDialog savefile = new SaveFileDialog();
-            savefile.FileName = diagramElementsObj.refDiagramName;
+            savefile.FileName = fileName;
             savefile.Filter = "YAML files (*.yaml)|*.yaml|All files (*.*)|*.*";
 
             if (savefile.ShowDialog() == DialogResult.OK)
