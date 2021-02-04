@@ -1,4 +1,11 @@
-﻿using System.Collections.Generic;
+﻿/*
+State Diagram Class
+Author: Priom Biswas
+Organization: Fraunhofer IESE Kaiserslautern
+Date: 04 February 2021
+*/
+
+using System.Collections.Generic;
 using System.Text;
 
 namespace YamlGenerator
@@ -15,7 +22,10 @@ namespace YamlGenerator
         private string stateName;
         private string effectsList;
 
-        // This method is used to create an object of type StateDiagram which will later converted to YAML directly
+        /// <function>
+        /// Used to create an object of type StateDiagram using Enterprise Architect API which is used
+        /// to be serialized as YAML
+        /// </function>
         public void CreateObjectForStateDiagram(EA.Repository rep, EA.Diagram diag, StateDiagram diagramElementsObj)
         {
             char[] charsToReplaceFromDiagramId = new char[] { '{', '}' };
@@ -59,8 +69,11 @@ namespace YamlGenerator
             }
         }
 
-        // GetStateName is a recursive method to traverse the project tree and get the name of states as well as nested states
-        // If State1 has a nested state State2, then the name of the State2 will be listed as State1/State2
+        /// <function>
+        /// Recursive method to traverse the project tree and get the name of states as well as nested states
+        /// If State1 has a nested state State2, then the name of the State2 will be listed as State1/State2
+        /// </function>
+
         private void GetStateName(string result, EA.Repository rep, EA.Element element)
         {
             if (element.ParentID == 0)
@@ -75,7 +88,9 @@ namespace YamlGenerator
             }
         }
 
-        // Used to get entry, exit and do actions of a state
+        /// <function>
+        /// Used to get entry, exit and do actions of a state
+        /// </function>
         private void GetActionsByState(EA.Element element, State stateObj)
         {
             StringBuilder entryAc = new StringBuilder();
@@ -120,7 +135,9 @@ namespace YamlGenerator
             }
         }
 
-        // Used to get all transitions of state diagram
+        /// <function>
+        /// Used to get all transitions of state diagram
+        /// </function>
         private void GetAllTransitions(EA.Repository rep, StateDiagram diagramElementsObj, EA.Element element)
         {
             foreach (EA.Connector item in element.Connectors)
@@ -153,7 +170,7 @@ namespace YamlGenerator
                     transitionObj.effects = "[" + effectsList + "]";
                 }
 
-                // To remove duplicate transitions returned by Enterprise architect APIyu
+                // To remove duplicate transitions returned by Enterprise architect API
                 foreach (var transItem in diagramElementsObj.transitions)
                 {
                     if (transItem.from.Equals(transitionObj.from) && transItem.to.Equals(transitionObj.to))

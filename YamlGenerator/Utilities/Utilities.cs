@@ -1,4 +1,11 @@
-﻿using System.Linq;
+﻿/*
+Utility Class 
+Author: Priom Biswas
+Organization: Fraunhofer IESE Kaiserslautern
+Date: 04 February 2021
+*/
+
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.IO;
 using System.Windows.Forms;
@@ -16,6 +23,10 @@ namespace YamlGenerator
         {
             return Regex.Replace(input, @",+", ",");
         }
+
+        /// <function>
+        /// Serializes the object to YAML with the help of YAMLDOTNET library
+        /// </function>
         public static void SerializeAsYaml(object obj)
         {
             string yamlData;
@@ -30,6 +41,10 @@ namespace YamlGenerator
                 outputYamlString = yamlData.Replace("'", string.Empty);
             }
         }
+
+        /// <function>
+        /// Display save dialog to save the generated yaml content as .yaml
+        /// </function>
         public static void SaveAsYaml(string fileName)
         {
             SaveFileDialog savefile = new SaveFileDialog();

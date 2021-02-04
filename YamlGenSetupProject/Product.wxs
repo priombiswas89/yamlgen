@@ -3,8 +3,12 @@
 	<Product Id="112f586f-34e4-4ab1-a8ab-4864edda8b32" Name="YAML Generator" Language="1033" Version="1.0.0.0" Manufacturer="Priom Biswas" UpgradeCode="951733aa-a9e9-4893-8b69-33e3974f7b32">
 		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
+    <!-- To display the license while installing the plugin-->
     <WixVariable Id="WixUILicenseRtf" Value="$(var.ProjectDir)\license.rtf" />
+    
     <Property Id="WIXUI_INSTALLDIR" Value="YAMLGENPRODUCTDIR" />
+
+    <!-- To choose installation directory during installation-->
     <UIRef Id="WixUI_InstallDir" />
     
 		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
@@ -27,6 +31,7 @@
 
 	<Fragment>
 		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+      <!-- To refer yamlgenerator.dll file which is the main project dll-->
 			<Component Id="YamlGenerator.dll" Guid="d762ee68-1520-4f7b-87b3-8de1e0c04d2d">
         <Class Id="{17635ADB-CC45-3DA4-B423-B6F089180810}" Context="InprocServer32" Description="YamlGenerator.Transition" ThreadingModel="both" ForeignServer="mscoree.dll">
           <ProgId Id="YamlGenerator.Transition" Description="YamlGenerator.Transition" />
@@ -94,9 +99,11 @@
         <RegistryValue Root="HKCR" Key="Record\{5E1E504C-95C7-4B14-A0F6-70329F70084A}\1.0.0.0" Name="RuntimeVersion" Value="v4.0.30319" Type="string" Action="write" />
         <RegistryValue Root="HKCR" Key="Record\{5E1E504C-95C7-4B14-A0F6-70329F70084A}\1.0.0.0" Name="CodeBase" Value="file:///[#fil735EAE4A5569D4CB62663B1631683E63]" Type="string" Action="write" />
 			</Component>
+      <!-- To refer yamldotnet.dll file which is the used to convert object to YAML-->
 			<Component Id="YamlDotNet.dll" Guid="fb1dc0aa-e824-4ace-9549-ae6d96618c96">
 			  <File Id="YamlDotNet.dll" Name="YamlDotNet.dll" Source="$(var.YamlGenerator_TargetDir)YamlDotNet.dll" />
 			</Component>
+      <!-- To register the assembly in windows registry-->
       <Component Id="YamlGeneratorRegEntries" Guid="ec2209e7-a65b-4bf1-86f2-a396e632d09c">
         <RegistryKey Root="HKCU" Key="Software\Sparx Systems\EAAddins\YamlGenerator" Action="createAndRemoveOnUninstall">
           <RegistryValue Type="string" Value="YamlGenerator.YamlGeneratorMain" />

@@ -1,4 +1,11 @@
-﻿using System;
+﻿/*
+Enterprise Architect YAML Generator Plugin Main Class
+Author: Priom Biswas
+Organization: Fraunhofer IESE Kaiserslautern
+Date: 04 February 2021
+*/
+
+using System;
 using System.Windows.Forms;
 
 namespace YamlGenerator
