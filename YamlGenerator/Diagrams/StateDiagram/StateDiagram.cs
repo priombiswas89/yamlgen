@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using System.Text;
 
 namespace YamlGenerator
@@ -9,13 +8,14 @@ namespace YamlGenerator
         public string refDiagramName { get; set; }
         public string refDiagramId { get; set; }
         public List<State> states { get; set; }
-        public HashSet<Transition> transitions { get; set; }
+        public List<Transition> transitions { get; set; }
         public string initialState { get; set; }
         public string finalState { get; set; }
 
         private string stateName;
         private string effectsList;
 
+        // This method is used to create an object of type StateDiagram which will later converted to YAML directly
         public void CreateObjectForStateDiagram(EA.Repository rep, EA.Diagram diag, StateDiagram diagramElementsObj)
         {
             char[] charsToReplaceFromDiagramId = new char[] { '{', '}' };
@@ -23,7 +23,7 @@ namespace YamlGenerator
             diagramElementsObj.refDiagramId = diag.DiagramGUID.Trim(charsToReplaceFromDiagramId);
 
             diagramElementsObj.states = new List<State>();
-            diagramElementsObj.transitions = new HashSet<Transition>();
+            diagramElementsObj.transitions = new List<Transition>();
 
             foreach (EA.DiagramObject diagramObj in diag.DiagramObjects)
             {
@@ -32,11 +32,11 @@ namespace YamlGenerator
 
                 State stateObj = new State();
 
-                if (element.MetaType == "Pseudostate")
+                if (element.MetaType == "Pseudostate") // EA state diagram initial state is referred as Pseudostate
                 {
                     diagramElementsObj.initialState = element.Name;
                 }
-                else if (element.MetaType == "FinalState")
+                else if (element.MetaType == "FinalState") // EA state diagram final state is referred as FinalState
                 {
                     diagramElementsObj.finalState = element.Name;
                 }
@@ -44,7 +44,7 @@ namespace YamlGenerator
                 {
                     if (element.MetaType == "State")
                     {
-                        GetStateName(element.Name, rep, element);
+                        GetStateName(element.Name, rep, element); 
                         stateObj.name = stateName;
                         diagramElementsObj.states.Add(stateObj);
                     }
@@ -54,9 +54,13 @@ namespace YamlGenerator
                 {
                     GetActionsByState(element, stateObj);
                 }
+                
                 GetAllTransitions(rep, diagramElementsObj, element);
             }
         }
+
+        // GetStateName is a recursive method to traverse the project tree and get the name of states as well as nested states
+        // If State1 has a nested state State2, then the name of the State2 will be listed as State1/State2
         private void GetStateName(string result, EA.Repository rep, EA.Element element)
         {
             if (element.ParentID == 0)
@@ -70,6 +74,8 @@ namespace YamlGenerator
                 GetStateName(parent.Name + "/" + result, rep, parent);
             }
         }
+
+        // Used to get entry, exit and do actions of a state
         private void GetActionsByState(EA.Element element, State stateObj)
         {
             StringBuilder entryAc = new StringBuilder();
@@ -113,13 +119,15 @@ namespace YamlGenerator
                 }
             }
         }
+
+        // Used to get all transitions of state diagram
         private void GetAllTransitions(EA.Repository rep, StateDiagram diagramElementsObj, EA.Element element)
         {
             foreach (EA.Connector item in element.Connectors)
             {
                 bool isOld = false;
-                int clientId = item.ClientID;
-                int supplierId = item.SupplierID;
+                int clientId = item.ClientID;     // "From" state of a transition, from where the transition begins
+                int supplierId = item.SupplierID; // "To" state of a transition, where the transition ends
                 char[] charsToReplaceFromEffects = new char[] { ';', '\r', '\t', '\n' };
 
                 EA.Element clientElement = rep.GetElementByID(clientId);
@@ -144,6 +152,8 @@ namespace YamlGenerator
                 {
                     transitionObj.effects = "[" + effectsList + "]";
                 }
+
+                // To remove duplicate transitions returned by Enterprise architect APIyu
                 foreach (var transItem in diagramElementsObj.transitions)
                 {
                     if (transItem.from.Equals(transitionObj.from) && transItem.to.Equals(transitionObj.to))
