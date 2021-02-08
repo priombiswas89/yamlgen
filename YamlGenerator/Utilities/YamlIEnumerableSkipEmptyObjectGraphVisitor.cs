@@ -1,8 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿/*
+Class to remove empty object attributes from generated YAML
+Author: Priom Biswas
+Organization: Fraunhofer IESE Kaiserslautern
+Date: 08 February 2021
+*/
+
+
 using YamlDotNet.Core;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.ObjectGraphVisitors;

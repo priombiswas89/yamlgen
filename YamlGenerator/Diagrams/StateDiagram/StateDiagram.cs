@@ -2,7 +2,7 @@
 State Diagram Class
 Author: Priom Biswas
 Organization: Fraunhofer IESE Kaiserslautern
-Date: 04 February 2021
+Date: 08 February 2021
 */
 
 using System.Collections.Generic;
@@ -23,7 +23,7 @@ namespace YamlGenerator
         private string effectsList;
 
         /// <function>
-        /// Used to create an object of type StateDiagram using Enterprise Architect API which is used
+        /// Function to create an object of type StateDiagram using Enterprise Architect API which later used
         /// to be serialized as YAML
         /// </function>
         public void CreateObjectForStateDiagram(EA.Repository rep, EA.Diagram diag, StateDiagram diagramElementsObj)
@@ -70,7 +70,7 @@ namespace YamlGenerator
         }
 
         /// <function>
-        /// Recursive method to traverse the project tree and get the name of states as well as nested states
+        /// Recursive function to traverse the project tree and get the name of states as well as nested states
         /// If State1 has a nested state State2, then the name of the State2 will be listed as State1/State2
         /// </function>
 
@@ -89,7 +89,7 @@ namespace YamlGenerator
         }
 
         /// <function>
-        /// Used to get entry, exit and do actions of a state
+        /// Function to get entry, exit and do actions of a state
         /// </function>
         private void GetActionsByState(EA.Element element, State stateObj)
         {
@@ -136,7 +136,7 @@ namespace YamlGenerator
         }
 
         /// <function>
-        /// Used to get all transitions of state diagram
+        /// Function to get all transitions of state diagram
         /// </function>
         private void GetAllTransitions(EA.Repository rep, StateDiagram diagramElementsObj, EA.Element element)
         {

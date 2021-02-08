@@ -2,7 +2,7 @@
 Utility Class 
 Author: Priom Biswas
 Organization: Fraunhofer IESE Kaiserslautern
-Date: 04 February 2021
+Date: 08 February 2021
 */
 
 using System.Linq;
@@ -25,7 +25,7 @@ namespace YamlGenerator
         }
 
         /// <function>
-        /// Serializes the object to YAML with the help of YAMLDOTNET library
+        /// Function to serializes diagram object to YAML with the help of YAMLDOTNET library
         /// </function>
         public static void SerializeAsYaml(object obj)
         {
@@ -43,7 +43,7 @@ namespace YamlGenerator
         }
 
         /// <function>
-        /// Display save dialog to save the generated yaml content as .yaml
+        /// Function to display save dialog to save the generated yaml content as .yaml
         /// </function>
         public static void SaveAsYaml(string fileName)
         {
